@@ -1,13 +1,30 @@
-test('multiplies', () => {
-  let fiver: Dollar = {amount: 5};
-  let tenner = times(fiver, 2);
-  expect(tenner.amount).toBe(10);
+test('multiplies in dollars', () => {
+  let fiver: Money = {amount: 5, currency: "USD"};
+  let expected: Money = {amount: 10, currency: "USD"}
+  expect(times(fiver, 2)).toStrictEqual(expected);
 } )
 
-function times({ amount }: Dollar, times: number): Dollar {
-  return {amount: amount * times}
+test('multiplies in euros', () => {
+  let fiver: Money = {amount: 10, currency: "EUR"};
+  let expected: Money = {amount: 20, currency: "EUR"}
+  expect(times(fiver, 2)).toStrictEqual(expected);
+} )
+
+test('divides',() => {
+  let originalMoney: Money = {amount: 4002, currency: "KRW"};
+  let expectedMoneyAfterDivision: Money = {amount: 1000.5, currency: "KRW"};
+  expect(divide(originalMoney, 4)).toStrictEqual(expectedMoneyAfterDivision);
+})
+
+function times({ amount, currency }: Money, times: number): Money {
+  return {amount: amount * times, currency: currency}
 }
 
-type Dollar = {
+function divide({amount, currency}: Money, divisor: number): Money {
+  return {amount: amount/divisor, currency: currency}
+}
+
+type Money = {
   amount: number
+  currency: string
 }
