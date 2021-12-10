@@ -16,15 +16,37 @@ test('divides',() => {
   expect(divide(originalMoney, 4)).toStrictEqual(expectedMoneyAfterDivision);
 })
 
-function times({ amount, currency }: Money, times: number): Money {
-  return {amount: amount * times, currency: currency}
+test('adds 2 money', () => {
+  let fifteenDollars: Money = {amount: 15, currency: "USD"};
+  let fiveDollars: Money = {amount: 5, currency: "USD"};
+  let tenDollars: Money = {amount: 10, currency: "USD"};
+
+  let portfolio: Portfolio = [];
+  add(portfolio, fiveDollars);
+  add(portfolio, tenDollars);
+  expect(evaluate(portfolio, "USD")).toStrictEqual(fifteenDollars);
+})
+
+const times = ({ amount, currency }: Money, times: number): Money => {
+  return {amount: amount * times, currency}
 }
 
-function divide({amount, currency}: Money, divisor: number): Money {
-  return {amount: amount/divisor, currency: currency}
+const divide = ({amount, currency}: Money, divisor: number): Money => {
+  return {amount: amount/divisor, currency}
+}
+
+const add = (portfolio: Portfolio, money: Money) => {
+  return portfolio.push(money)
+}
+
+const evaluate = (portfolio: Portfolio, currency: string) => {
+  let total = portfolio.reduce((sum, money) => { return sum + money.amount }, 0);
+  return {amount: total, currency}
 }
 
 type Money = {
   amount: number
   currency: string
 }
+
+type Portfolio = Money[]
